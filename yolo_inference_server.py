@@ -49,8 +49,10 @@ def resolve_model_path() -> str:
 
 
 MODEL_PATH = resolve_model_path()
-HOST = os.getenv("YOLO_HOST", "127.0.0.1")
-PORT = int(os.getenv("YOLO_PORT", "5000"))
+# Railway injects PORT dynamically; local fallback remains 5000.
+PORT = int(os.getenv("PORT", os.getenv("YOLO_PORT", "5000")))
+# Must listen on all interfaces in containerized deployments (Railway).
+HOST = os.getenv("YOLO_HOST", "0.0.0.0")
 IMGSZ = int(os.getenv("YOLO_IMGSZ", "640"))
 CONF = float(os.getenv("YOLO_CONF", "0.25"))
 
